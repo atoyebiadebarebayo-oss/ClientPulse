@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClientPulse — Micro-CRM & Sales Pipeline Tracker</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Header / Navigation -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <i class="fa-solid fa-address-card"></i> Client<span>Pulse</span>
+      </div>
+      <div class="header-actions">
+        <div class="search-box">
+          <i class="fa-solid fa-search"></i>
+          <input type="text" id="search-input" placeholder="Search leads or companies...">
+        </div>
+        <button id="theme-toggle-btn" class="btn-icon" aria-label="Toggle Theme">
+          <i class="fa-solid fa-moon"></i>
+        </button>
+        <button id="open-add-lead-btn" class="btn btn-primary">
+          <i class="fa-solid fa-plus"></i> Add New Lead
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Metrics Overview Bar -->
+  <section class="metrics-bar">
+    <div class="metrics-container">
+      <div class="metric-card">
+        <span class="metric-title">Total Deals</span>
+        <strong id="metric-total-deals">0</strong>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Pipeline Value</span>
+        <strong id="metric-pipeline-value">$0</strong>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Closed Won</span>
+        <strong id="metric-won-value" class="text-success">$0</strong>
+      </div>
+      <div class="metric-card">
+        <span class="metric-title">Win Rate</span>
+        <strong id="metric-win-rate">0%</strong>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sales Pipeline Board -->
+  <main class="pipeline-board">
+    <!-- Stage: New Lead -->
+    <div class="pipeline-column" data-stage="lead">
+      <div class="column-header stage-lead">
+        <div class="stage-title">
+          <i class="fa-solid fa-bullseye"></i> New Leads (<span class="stage-count">0</span>)
+        </div>
+        <span class="stage-total">$0</span>
+      </div>
+      <div class="cards-container" id="stage-lead"></div>
+    </div>
+
+    <!-- Stage: Contacted -->
+    <div class="pipeline-column" data-stage="contacted">
+      <div class="column-header stage-contacted">
+        <div class="stage-title">
+          <i class="fa-solid fa-comments"></i> Contacted (<span class="stage-count">0</span>)
+        </div>
+        <span class="stage-total">$0</span>
+      </div>
+      <div class="cards-container" id="stage-contacted"></div>
+    </div>
+
+    <!-- Stage: Proposal Sent -->
+    <div class="pipeline-column" data-stage="proposal">
+      <div class="column-header stage-proposal">
+        <div class="stage-title">
+          <i class="fa-solid fa-file-signature"></i> Proposal Sent (<span class="stage-count">0</span>)
+        </div>
+        <span class="stage-total">$0</span>
+      </div>
+      <div class="cards-container" id="stage-proposal"></div>
+    </div>
+
+    <!-- Stage: Closed Won -->
+    <div class="pipeline-column" data-stage="won">
+      <div class="column-header stage-won">
+        <div class="stage-title">
+          <i class="fa-solid fa-circle-check"></i> Closed Won (<span class="stage-count">0</span>)
+        </div>
+        <span class="stage-total">$0</span>
+      </div>
+      <div class="cards-container" id="stage-won"></div>
+    </div>
+
+    <!-- Stage: Closed Lost -->
+    <div class="pipeline-column" data-stage="lost">
+      <div class="column-header stage-lost">
+        <div class="stage-title">
+          <i class="fa-solid fa-circle-xmark"></i> Closed Lost (<span class="stage-count">0</span>)
+        </div>
+        <span class="stage-total">$0</span>
+      </div>
+      <div class="cards-container" id="stage-lost"></div>
+    </div>
+  </main>
+
+  <!-- Add / Edit Lead Modal -->
+  <div id="lead-modal" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Add New Lead</h3>
+        <button id="close-modal-btn" class="close-btn">&times;</button>
+      </div>
+      <form id="lead-form">
+        <input type="hidden" id="lead-id">
+        <div class="form-group">
+          <label for="client-name">Client / Contact Name *</label>
+          <input type="text" id="client-name" required placeholder="e.g. Sarah Connor">
+        </div>
+        <div class="form-group">
+          <label for="company-name">Company Name *</label>
+          <input type="text" id="company-name" required placeholder="e.g. Cyberdyne Systems">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="deal-value">Deal Value ($) *</label>
+            <input type="number" id="deal-value" min="0" required placeholder="1500">
+          </div>
+          <div class="form-group">
+            <label for="pipeline-stage">Pipeline Stage *</label>
+            <select id="pipeline-stage" required>
+              <option value="lead">New Lead</option>
+              <option value="contacted">Contacted</option>
+              <option value="proposal">Proposal Sent</option>
+              <option value="won">Closed Won</option>
+              <option value="lost">Closed Lost</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="client-email">Email Address</label>
+            <input type="email" id="client-email" placeholder="sarah@example.com">
+          </div>
+          <div class="form-group">
+            <label for="client-phone">Phone / WhatsApp</label>
+            <input type="tel" id="client-phone" placeholder="+1234567890">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="lead-notes">Interaction Notes / Deal Details</label>
+          <textarea id="lead-notes" rows="3" placeholder="Discussed redesign requirement. Follow up on Monday."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fa-solid fa-floppy-disk"></i> Save Lead Record
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
