@@ -8,7 +8,7 @@ ClientPulse is a visual sales pipeline management tool engineered for small busi
 ---
 ## 🚀 Live Demo
 
-Explore the live application here: **[https://clientpulses.netlify.app]
+Explore the live application here:[https://clientpulses.netlify.app]
 ## ✨ Features
 
 - **Drag-and-Drop Pipeline Board**: Effortlessly move deal cards across 5 key sales stages (`New Lead`, `Contacted`, `Proposal Sent`, `Closed Won`, `Closed Lost`).
